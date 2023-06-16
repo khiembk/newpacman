@@ -56,6 +56,7 @@ public class Board extends JPanel implements ActionListener {
     private int req_dx, req_dy, view_dx, view_dy;
     private int lukypoint_x;
     private int lukypoint_y;
+    private boolean mad= false;
     private final Image ghostUpList[]= {
             new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostUp1.png").getImage(),
             new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostUp2.png").getImage(),
@@ -205,7 +206,20 @@ public class Board extends JPanel implements ActionListener {
             checkMaze();
         }
     }
+    private void PacmanMad(){
+      Thread madthread= new Thread(){
+          public void run(){
+             try {
+                 Thread.sleep(5000);
+                 mad=false;
+             }catch(InterruptedException e){
+                 throw new RuntimeException();
+             }
+          }
+      };
+     madthread.start();
 
+    }
     private void showIntroScreen(Graphics2D g2d) {
 
         g2d.setColor(new Color(0, 32, 48));
@@ -331,6 +345,8 @@ public class Board extends JPanel implements ActionListener {
                     int gho_y= ghost_y[i]+(dy[0]*ghostSpeed[i]);
                     int dmin= Math.abs(pacman_y-gho_y)+Math.abs(pacman_x-gho_x);
                     int min=0;
+                    int max=0;
+                    int dmax=dmin;
                     for(int j=0;j<count;j++){
                          gho_x= ghost_x[i]+(dx[j]*ghostSpeed[i]);
                          gho_y= ghost_y[i]+(dy[j]*ghostSpeed[i]);
@@ -339,17 +355,29 @@ public class Board extends JPanel implements ActionListener {
                             dmin=d;
                             min=j;
                         }
-                    }
-                    if(i%2==0){
-                    ghost_dx[i] = dx[min];
-                    ghost_dy[i] = dy[min];
-                 }else {
-                        count=(int)(Math.random()*count);
-                        if(count>3){
-                            count=3;
+                        if(d>dmax){
+                            dmax=d;
+                            max=j;
                         }
-                        ghost_dx[i]=dx[count];
-                        ghost_dy[i]=dy[count];
+                    }
+
+
+                    if(mad==true && dmax <6*N_BLOCKS ){
+                        ghost_dx[i]=dx[max];
+                        ghost_dy[i]=dy[max];
+
+                    }else{
+                        if(i%2==0){
+                            ghost_dx[i] = dx[min];
+                            ghost_dy[i] = dy[min];
+                        }else {
+                            count=(int)(Math.random()*count);
+                            if(count>3){
+                                count=3;
+                            }
+                            ghost_dx[i]=dx[count];
+                            ghost_dy[i]=dy[count];
+                        }
                     }
                 }
 
@@ -440,6 +468,8 @@ public class Board extends JPanel implements ActionListener {
         if(pacman_x==lukypoint_x && pacman_y==lukypoint_y &&(eattenpoint==false)){
             pacsLeft++;
             eattenpoint=true;
+            mad=true;
+            PacmanMad();
         }
     }
 
