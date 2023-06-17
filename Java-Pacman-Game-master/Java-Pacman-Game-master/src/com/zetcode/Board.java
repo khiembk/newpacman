@@ -28,7 +28,7 @@ public class Board extends JPanel implements ActionListener {
     private Image ii;
     private final Color dotColor = new Color(192, 192, 0);
     private Color mazeColor;
-
+    private boolean pause = false;
     private boolean inGame = false;
     private boolean dying = false;
 
@@ -203,9 +203,7 @@ public class Board extends JPanel implements ActionListener {
     private void playGame(Graphics2D g2d) {
 
         if (dying) {
-
             death();
-
         } else {
             movePacman();
             drawPacman(g2d);
@@ -252,7 +250,14 @@ public class Board extends JPanel implements ActionListener {
         g2d.setColor(Color.red);
         g2d.fillOval((SCREEN_SIZE - metr.stringWidth(s)) / 2, (SCREEN_SIZE / 2 + 30),10,10);
 
-
+    }
+    private void showPauseScreen(Graphics2D pausegGraphics){
+        Font pause = new Font("Helvetica", Font.BOLD, 25);
+        FontMetrics metr = this.getFontMetrics(pause);
+        pausegGraphics.setFont(pause);
+        pausegGraphics.setColor(Color.white);
+        String pauseStr = "PAUSED!";
+        pausegGraphics.drawString(pauseStr, (SCREEN_SIZE - metr.stringWidth(pauseStr))  / 2, SCREEN_SIZE/2);
     }
 
 
@@ -313,6 +318,7 @@ public class Board extends JPanel implements ActionListener {
 
         continueLevel();
     }
+
 
     private void moveGhosts(Graphics2D g2d) {
 
@@ -665,7 +671,25 @@ public class Board extends JPanel implements ActionListener {
             ghostdeath[j]=false;
         }
     }
+    public void showResult( Graphics2D g2d){
+        g2d.setColor(new Color(0, 32, 48));
+        g2d.fillRect(50, SCREEN_SIZE / 2 - 50, SCREEN_SIZE - 100, 110);
+        g2d.setColor(Color.white);
+        g2d.drawRect(50, SCREEN_SIZE / 2 - 50, SCREEN_SIZE - 100, 110);
 
+        String s = "Press s to start random map";
+        String s3 = "Your score is : " + score;
+        String s4 = "HIGH SCORE";
+        Font small = new Font("Helvetica", Font.BOLD, 14);
+        FontMetrics metr = this.getFontMetrics(small);
+        g2d.setColor(Color.white);
+        g2d.setFont(small);
+        g2d.drawString(s, (SCREEN_SIZE - metr.stringWidth(s)) / 2, SCREEN_SIZE/2 - 20);
+        g2d.drawString(s3, (SCREEN_SIZE - metr.stringWidth(s3)) / 2, SCREEN_SIZE/2 + 10 );
+        if(score==highscore)
+        g2d.drawString(s4, (SCREEN_SIZE - metr.stringWidth(s4)) / 2, SCREEN_SIZE/2 + 40);
+
+    }
     private void initLevel() {
 
         int i;
@@ -808,8 +832,14 @@ public class Board extends JPanel implements ActionListener {
 
         if (inGame) {
             playGame(g2d);
+            if(pause){
+                showPauseScreen(g2d);
+            }
         } else {
-            showIntroScreen(g2d);
+            if(score>0){
+                showResult(g2d);
+            }else{
+            showIntroScreen(g2d);}
         }
 
         g2d.drawImage(ii, 5, 5, this);
@@ -841,9 +871,19 @@ public class Board extends JPanel implements ActionListener {
                     inGame = false;
                 } else if (key == KeyEvent.VK_P) {
                     if (timer.isRunning()) {
-                        timer.stop();
+                        pause = true;
+                        Timer delayTimer = new Timer(40, new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                // stop the main timer after 40 miliseconds
+                                timer.stop();
+                            }
+                        });
+                        delayTimer.setRepeats(false);
+                        delayTimer.start();
                     } else {
                         timer.start();
+                        pause = false;
                     }
                 }
             } else {
