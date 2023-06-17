@@ -62,6 +62,7 @@ public class Board extends JPanel implements ActionListener {
     private int magicfood_y;
     private boolean mad= false;
     private boolean eatfood;
+    private int highscore=100;
     private final Image ghostUpList[]= {
             new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostUp1.png").getImage(),
             new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostUp2.png").getImage(),
@@ -263,8 +264,9 @@ public class Board extends JPanel implements ActionListener {
         g.setFont(smallFont);
         g.setColor(new Color(96, 128, 255));
         s = "Score: " + score;
+        String high= "High score: "+ highscore;
         g.drawString(s, SCREEN_SIZE / 2 + 96, SCREEN_SIZE + 16);
-
+        g.drawString(high, SCREEN_SIZE / 2 -50, SCREEN_SIZE + 16);
         for (i = 0; i < pacsLeft; i++) {
             g.drawImage(pacman3left, i * 28 + 8, SCREEN_SIZE + 1, this);
         }
@@ -468,6 +470,9 @@ public class Board extends JPanel implements ActionListener {
             if ((ch & 16) != 0) {
                 screenData[pos] = (short) (ch & 15);
                 score++;
+                if(highscore<score){
+                    highscore=score;
+                }
             }
 
             if (req_dx != 0 || req_dy != 0) {
@@ -834,7 +839,7 @@ public class Board extends JPanel implements ActionListener {
                     req_dy = 1;
                 } else if (key == KeyEvent.VK_ESCAPE && timer.isRunning()) {
                     inGame = false;
-                } else if (key == KeyEvent.VK_PAUSE) {
+                } else if (key == KeyEvent.VK_P) {
                     if (timer.isRunning()) {
                         timer.stop();
                     } else {
