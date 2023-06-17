@@ -231,18 +231,29 @@ public class Board extends JPanel implements ActionListener {
     private void showIntroScreen(Graphics2D g2d) {
 
         g2d.setColor(new Color(0, 32, 48));
-        g2d.fillRect(50, SCREEN_SIZE / 2 - 30, SCREEN_SIZE - 100, 50);
+        g2d.fillRect(50, SCREEN_SIZE / 2 - 50, SCREEN_SIZE - 100, 110);
         g2d.setColor(Color.white);
-        g2d.drawRect(50, SCREEN_SIZE / 2 - 30, SCREEN_SIZE - 100, 50);
+        g2d.drawRect(50, SCREEN_SIZE / 2 - 50, SCREEN_SIZE - 100, 110);
 
         String s = "Press s to start random map";
+        String s1 = "Energizer";
+        String s2 = "Health pellet";
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = this.getFontMetrics(small);
 
         g2d.setColor(Color.white);
         g2d.setFont(small);
-        g2d.drawString(s, (SCREEN_SIZE - metr.stringWidth(s)) / 2, SCREEN_SIZE / 2);
+        g2d.drawString(s, (SCREEN_SIZE - metr.stringWidth(s)) / 2, SCREEN_SIZE/2 - 20);
+        g2d.drawString(s1, (SCREEN_SIZE - metr.stringWidth(s)) / 2 + 20, SCREEN_SIZE/2 + 10 );
+        g2d.drawString(s2, (SCREEN_SIZE - metr.stringWidth(s)) / 2 + 20, SCREEN_SIZE/2 + 40);
+        g2d.setColor(Color.blue);
+        g2d.fillOval((SCREEN_SIZE - metr.stringWidth(s)) / 2, (SCREEN_SIZE / 2),10,10);
+        g2d.setColor(Color.red);
+        g2d.fillOval((SCREEN_SIZE - metr.stringWidth(s)) / 2, (SCREEN_SIZE / 2 + 30),10,10);
+
+
     }
+
 
     private void drawScore(Graphics2D g) {
 
@@ -611,12 +622,15 @@ public class Board extends JPanel implements ActionListener {
                 if ((screenData[i] & 16) != 0) {
                     g2d.setColor(dotColor);
                     if(x==lukypoint_x && y==lukypoint_y && eattenpoint==false)
-                    {   g2d.fillOval(x+11,y+11,6,6);}
+                    {    g2d.setColor(Color.blue);
+                        g2d.fillOval(x+9,y+9,8,8);}
                     if(x==magicfood_x && y==magicfood_y && eatfood ==false)
                     {
-                        g2d.fillOval(x+11,y+11,6,6);
+                        g2d.setColor(Color.red);
+                        g2d.fillOval(x+9,y+9,8,8);
                     }else
-                    {  g2d.fillRect(x + 11, y + 11, 2, 2);}
+                    {     g2d.setColor(dotColor);
+                        g2d.fillRect(x + 11, y + 11, 2, 2);}
                 }
 
                 i++;
