@@ -46,6 +46,8 @@ public class Board extends JPanel implements ActionListener {
     private int N_GHOSTS = 6;
     private int pacsLeft, score;
     private int[] dx, dy;
+    private boolean ghostdeath[];
+
     private int[] ghost_x, ghost_y, ghost_dx, ghost_dy, ghostSpeed,ghost_color;
     private Image ghost,ghost1,ghostUp, ghostDown,ghostRight,ghostLeft;
     private Image pacman1, pacman2up,pacman2left, pacman2right, pacman2down;
@@ -162,11 +164,12 @@ public class Board extends JPanel implements ActionListener {
         ghost_dy = new int[MAX_GHOSTS];
         ghostSpeed = new int[MAX_GHOSTS];
         ghost_color= new int[MAX_GHOSTS];
-
+        ghostdeath = new boolean[MAX_GHOSTS];
         dx = new int[4];
         dy = new int[4];
         for(int j=0;j<MAX_GHOSTS;j++){
             ghost_color[j]= j%4;
+            ghostdeath[j]=false;
         }
         timer = new Timer(40, this);
         timer.start();
@@ -302,6 +305,8 @@ public class Board extends JPanel implements ActionListener {
         int count;
 
         for (i = 0; i < N_GHOSTS; i++) {
+            if(ghostdeath[i]==true)
+                 continue;
             if (ghost_x[i] % BLOCK_SIZE == 0 && ghost_y[i] % BLOCK_SIZE == 0) {
                 pos = ghost_x[i] / BLOCK_SIZE + N_BLOCKS * (int) (ghost_y[i] / BLOCK_SIZE);
 
@@ -400,9 +405,12 @@ public class Board extends JPanel implements ActionListener {
             }
             if (pacman_x > (ghost_x[i] - 12) && pacman_x < (ghost_x[i] + 12)
                     && pacman_y > (ghost_y[i] - 12) && pacman_y < (ghost_y[i] + 12)
-                    && inGame) {
-
+                    && inGame  ) {
+              if(ghostdeath[i]==false && mad== false)
                 dying = true;
+              if(ghostdeath[i]==false && mad==true){
+                  ghostdeath[i]=true;
+              }
             }
         }
 
