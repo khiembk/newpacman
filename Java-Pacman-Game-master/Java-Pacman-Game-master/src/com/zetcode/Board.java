@@ -48,7 +48,7 @@ public class Board extends JPanel implements ActionListener {
     private int[] dx, dy;
     private int[] ghost_x, ghost_y, ghost_dx, ghost_dy, ghostSpeed,ghost_color;
     private Image ghost,ghost1,ghostUp, ghostDown,ghostRight,ghostLeft;
-    private Image pacman1, pacman2up, pacman2left, pacman2right, pacman2down;
+    private Image pacman1, pacman2up,pacman2left, pacman2right, pacman2down;
     private Image pacman3up, pacman3down, pacman3left, pacman3right;
     private Image pacman4up, pacman4down, pacman4left, pacman4right;
 
@@ -210,7 +210,9 @@ public class Board extends JPanel implements ActionListener {
       Thread madthread= new Thread(){
           public void run(){
              try {
+                 setPacmanMad();
                  Thread.sleep(5000);
+                 PacmancomeNomal();
                  mad=false;
              }catch(InterruptedException e){
                  throw new RuntimeException();
@@ -692,6 +694,35 @@ public class Board extends JPanel implements ActionListener {
         ghost = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghost1.png").getImage();
         ghost1 = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghost.png").getImage();
         pacman1 = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/pacman.png").getImage();
+        pacman2up = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/up1.png").getImage();
+        pacman3up = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/up2.png").getImage();
+        pacman4up = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/up3.png").getImage();
+        pacman2down = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/down1.png").getImage();
+        pacman4down = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/down3.png").getImage();
+        pacman2left = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/left1.png").getImage();
+        pacman3down = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/down2.png").getImage();
+        pacman3left = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/left2.png").getImage();
+        pacman4left = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/left3.png").getImage();
+        pacman2right = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/right1.png").getImage();
+        pacman3right = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/right2.png").getImage();
+        pacman4right = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/right3.png").getImage();
+
+    }
+    private void setPacmanMad(){
+        pacman2up = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/pacman2Up1.png").getImage();
+        pacman3up = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/pacman2Up2.png").getImage();
+        pacman4up = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/pacman2Up3.png").getImage();
+        pacman2down = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/pacman2Down1.png").getImage();
+        pacman4down = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/pacman2Down3.png").getImage();
+        pacman2left = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/pacman2Left1.png").getImage();
+        pacman3down = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/pacman2Down2.png").getImage();
+        pacman3left = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/pacman2Left2.png").getImage();
+        pacman4left = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/pacman2Left3.png").getImage();
+        pacman2right = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/pacman2Right1.png").getImage();
+        pacman3right = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/pacman2Right2.png").getImage();
+        pacman4right = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/pacman2Right3.png").getImage();
+    }
+    private void PacmancomeNomal(){
         pacman2up = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/up1.png").getImage();
         pacman3up = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/up2.png").getImage();
         pacman4up = new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/up3.png").getImage();
