@@ -38,7 +38,7 @@ public class Board extends JPanel implements ActionListener {
     private final int PAC_ANIM_DELAY = 2;
     private final int PACMAN_ANIM_COUNT = 4;
     private final int MAX_GHOSTS = 12;
-    private final int PACMAN_SPEED = 4;
+    private final int PACMAN_SPEED = 6;
     private boolean eattenpoint= false;
     private int pacAnimCount = PAC_ANIM_DELAY;
     private int pacAnimDir = 1;
@@ -372,7 +372,7 @@ public class Board extends JPanel implements ActionListener {
                     }
 
 
-                    if(mad==true && dmax <6*N_BLOCKS ){
+                    if(mad==true && dmax <3*BLOCK_SIZE ){
                         ghost_dx[i]=dx[max];
                         ghost_dy[i]=dy[max];
 
@@ -381,12 +381,16 @@ public class Board extends JPanel implements ActionListener {
                             ghost_dx[i] = dx[min];
                             ghost_dy[i] = dy[min];
                         }else {
+                            if(dmax<2*BLOCK_SIZE){
+                                ghost_dx[i]=dx[min];
+                                ghost_dy[i]=dy[min];
+                            }else{
                             count=(int)(Math.random()*count);
                             if(count>3){
                                 count=3;
                             }
                             ghost_dx[i]=dx[count];
-                            ghost_dy[i]=dy[count];
+                            ghost_dy[i]=dy[count];}
                         }
                     }
                 }
@@ -628,6 +632,9 @@ public class Board extends JPanel implements ActionListener {
         initLevel();
         N_GHOSTS = 4;
         currentSpeed = 3;
+        for(int j=0;j<N_GHOSTS;j++){
+            ghostdeath[j]=false;
+        }
     }
     private void initGame(int level){
         pacsLeft = 3;
@@ -635,6 +642,9 @@ public class Board extends JPanel implements ActionListener {
         initLevel(level);
         N_GHOSTS = 6;
         currentSpeed = 3;
+        for(int j=0;j<N_GHOSTS;j++){
+            ghostdeath[j]=false;
+        }
     }
 
     private void initLevel() {
