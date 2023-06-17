@@ -38,7 +38,7 @@ public class Board extends JPanel implements ActionListener {
     private final int PAC_ANIM_DELAY = 2;
     private final int PACMAN_ANIM_COUNT = 4;
     private final int MAX_GHOSTS = 12;
-    private final int PACMAN_SPEED = 6;
+    private final int PACMAN_SPEED = 4;
     private boolean eattenpoint= false;
     private int pacAnimCount = PAC_ANIM_DELAY;
     private int pacAnimDir = 1;
@@ -131,7 +131,7 @@ public class Board extends JPanel implements ActionListener {
     private final int validSpeeds[] = {1, 2, 3, 4, 6, 8};
     private final int maxSpeed = 6;
 
-    private int currentSpeed = 3;
+    private int currentSpeed = 4;
     private short[] screenData;
     private Timer timer;
 
@@ -803,4 +803,5 @@ public class Board extends JPanel implements ActionListener {
 
         repaint();
     }
+
 }
