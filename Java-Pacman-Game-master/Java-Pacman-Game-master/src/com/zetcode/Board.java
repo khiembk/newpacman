@@ -58,7 +58,10 @@ public class Board extends JPanel implements ActionListener {
     private int req_dx, req_dy, view_dx, view_dy;
     private int lukypoint_x;
     private int lukypoint_y;
+    private int magicfood_x;
+    private int magicfood_y;
     private boolean mad= false;
+    private boolean eatfood;
     private final Image ghostUpList[]= {
             new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostUp1.png").getImage(),
             new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostUp2.png").getImage(),
@@ -410,6 +413,7 @@ public class Board extends JPanel implements ActionListener {
                 dying = true;
               if(ghostdeath[i]==false && mad==true){
                   ghostdeath[i]=true;
+                  score+=50;
               }
             }
         }
@@ -476,10 +480,13 @@ public class Board extends JPanel implements ActionListener {
         pacman_y = pacman_y + PACMAN_SPEED * pacmand_y;
 
         if(pacman_x==lukypoint_x && pacman_y==lukypoint_y &&(eattenpoint==false)){
-            pacsLeft++;
             eattenpoint=true;
             mad=true;
             PacmanMad();
+        }
+        if(pacman_x==magicfood_x && pacman_y==magicfood_y &&(eatfood==false)){
+            eatfood=true;
+            pacsLeft++;
         }
     }
 
@@ -601,7 +608,10 @@ public class Board extends JPanel implements ActionListener {
                     g2d.setColor(dotColor);
                     if(x==lukypoint_x && y==lukypoint_y && eattenpoint==false)
                     {   g2d.fillOval(x+11,y+11,6,6);}
-                    else
+                    if(x==magicfood_x && y==magicfood_y && eatfood ==false)
+                    {
+                        g2d.fillOval(x+11,y+11,6,6);
+                    }else
                     {  g2d.fillRect(x + 11, y + 11, 2, 2);}
                 }
 
@@ -661,7 +671,10 @@ public class Board extends JPanel implements ActionListener {
         int random;
         lukypoint_x= 4* BLOCK_SIZE;
         lukypoint_y= 4* BLOCK_SIZE;
+        magicfood_x= (int)(Math.random()*N_BLOCKS)*BLOCK_SIZE;
+        magicfood_y= (int)(Math.random()*N_BLOCKS)*BLOCK_SIZE;
         eattenpoint= false;
+        eatfood=false;
         for (i = 0; i < N_GHOSTS; i++) {
 
             ghost_y[i] = 4 * BLOCK_SIZE;
