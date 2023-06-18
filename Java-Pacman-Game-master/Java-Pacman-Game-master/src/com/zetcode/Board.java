@@ -53,7 +53,7 @@ public class Board extends JPanel implements ActionListener {
     private Image pacman1, pacman2up,pacman2left, pacman2right, pacman2down;
     private Image pacman3up, pacman3down, pacman3left, pacman3right;
     private Image pacman4up, pacman4down, pacman4left, pacman4right;
-
+    private Image cherry;
     private int pacman_x, pacman_y, pacmand_x, pacmand_y;
     private int req_dx, req_dy, view_dx, view_dy;
     private int lukypoint_x;
@@ -134,6 +134,23 @@ public class Board extends JPanel implements ActionListener {
             19, 26, 28, 25, 26, 22, 19, 20, 19, 28, 21, 25, 28, 21, 21,
             17, 26, 26, 26, 22, 25, 28, 21, 21, 23, 25, 26, 26, 28, 21,
             25, 26, 26, 30, 25, 26, 26, 28, 25, 24, 26, 26, 26, 26, 28};
+    private final short CrossWord[] = {
+            0, 19, 18, 22,  0,  0, 19, 18, 22,  0, 19, 18, 18, 22,  0,
+            19, 16, 16, 20,  0, 19, 16, 16, 20,  0, 17, 16, 16, 16, 22,
+            17, 16, 16, 24, 18, 16, 16, 16, 20,  0, 25, 24, 16, 16, 20,
+            17, 16, 20,  0, 17, 16, 16, 16, 24, 22,  0,  0, 17, 24, 28,
+            25, 24, 28,  0, 17, 16, 24, 28,  0, 17, 18, 18, 20,  0,  0,
+            0,  0,  0, 19, 24, 20,  0,  0, 19, 24, 16, 16, 16, 22,  0,
+            19, 18, 18, 20,  0, 25, 18, 18, 20,  0, 25, 16, 16, 16, 22,
+            17, 16, 16, 20,  0,  0, 17, 16, 20,  0,  0, 17, 16, 16, 20,
+            25, 16, 16, 16, 22,  0, 17, 24, 24, 22,  0, 17, 24, 24, 28,
+            0, 25, 16, 16, 16, 18, 28,  0,  0, 17, 18, 28,  0,  0,  0,
+            0,  0, 17, 24, 24, 20,  0, 19, 18, 16, 20,  0, 19, 18, 22,
+            19, 18, 20,  0,  0, 25, 18, 16, 16, 16, 20,  0, 17, 16, 20,
+            17, 16, 16, 18, 22,  0, 17, 16, 16, 16, 24, 18, 16, 16, 20,
+            25, 16, 16, 16, 20,  0, 17, 16, 16, 28,  0, 17, 16, 16, 28,
+            0, 25, 24, 24, 28,  0, 25, 24, 28,  0,  0, 25, 24, 28,  0
+    };
     private final int validSpeeds[] = {1, 2, 3, 4, 6, 8};
     private final int maxSpeed = 6;
 
@@ -436,6 +453,7 @@ public class Board extends JPanel implements ActionListener {
                 dying = true;
               if(ghostdeath[i]==false && mad==true){
                   ghostdeath[i]=true;
+
                   score+=50;
               }
             }
@@ -637,8 +655,7 @@ public class Board extends JPanel implements ActionListener {
                         g2d.fillOval(x+9,y+9,8,8);}
                     if(x==magicfood_x && y==magicfood_y && eatfood ==false)
                     {
-                        g2d.setColor(Color.red);
-                        g2d.fillOval(x+9,y+9,8,8);
+                        g2d.drawImage(cherry,x,y,this);
                     }else
                     {     g2d.setColor(dotColor);
                         g2d.fillRect(x + 11, y + 11, 2, 2);}
@@ -714,6 +731,11 @@ public class Board extends JPanel implements ActionListener {
                 screenData[i]= matrixData[i];
             }
         }
+        if(level==4){
+            for (int i=0;i<N_BLOCKS*N_BLOCKS;i++){
+                screenData[i]= CrossWord[i];
+            }
+        }
         continueLevel();
     }
 
@@ -729,7 +751,7 @@ public class Board extends JPanel implements ActionListener {
         eattenpoint= false;
         eatfood=false;
         for (i = 0; i < N_GHOSTS; i++) {
-
+            ghostdeath[i]=false;
             ghost_y[i] = 4 * BLOCK_SIZE;
             ghost_x[i] = 4 * BLOCK_SIZE;
             ghost_dy[i] = 0;
@@ -761,6 +783,7 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void loadImages() {
+        cherry= new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/cherry.png").getImage();
         ghostUp= new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostUp.png").getImage();
         ghostDown= new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostDown.png").getImage();
         ghostRight= new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostRight.png").getImage();
@@ -889,9 +912,9 @@ public class Board extends JPanel implements ActionListener {
             } else {
                 if (key == 's' || key == 'S') {
                     inGame = true;
-                    int level = (int)(Math.random()*4);
-                    if(level>3)
-                        level=3;
+                    int level = (int)(Math.random()*5);
+                    if(level>4)
+                        level=4;
                     initGame(level);
                 }else if(key=='1'){
                     inGame= true;
@@ -902,6 +925,9 @@ public class Board extends JPanel implements ActionListener {
                 }else if(key=='3'){
                     inGame=true;
                     initGame(3);
+                }else if(key=='4'){
+                    inGame=true;
+                    initGame(4);
                 }
             }
         }
