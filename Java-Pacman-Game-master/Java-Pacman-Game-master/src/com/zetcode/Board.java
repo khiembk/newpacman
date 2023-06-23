@@ -357,20 +357,25 @@ public class Board extends JPanel implements ActionListener {
                  continue;
             if (ghost_x[i] % BLOCK_SIZE == 0 && ghost_y[i] % BLOCK_SIZE == 0) {
                 pos = ghost_x[i] / BLOCK_SIZE + N_BLOCKS * (int) (ghost_y[i] / BLOCK_SIZE);
-
+                int direct = FindwaytoPacman(CreateInput(levelData,15),ghost_x[i]/BLOCK_SIZE,ghost_y[i]/BLOCK_SIZE,pacman_x/BLOCK_SIZE,pacman_y/BLOCK_SIZE);
                 count = 0;
-
+                int valid=-1;
                 if ((screenData[pos] & 1) == 0 && ghost_dx[i] != 1) {
                     dx[count] = -1;
                     dy[count] = 0;
                     count++;
-
+                   if(direct==1){
+                       valid=count-1;
+                   }
                 }
 
                 if ((screenData[pos] & 2) == 0 && ghost_dy[i] != 1) {
                     dx[count] = 0;
                     dy[count] = -1;
                     count++;
+                    if(direct==3){
+                        valid=count-1;
+                    }
 
                 }
 
@@ -378,6 +383,9 @@ public class Board extends JPanel implements ActionListener {
                     dx[count] = 1;
                     dy[count] = 0;
                     count++;
+                    if(direct==0){
+                        valid=count-1;
+                    }
 
                 }
 
@@ -385,6 +393,9 @@ public class Board extends JPanel implements ActionListener {
                     dx[count] = 0;
                     dy[count] = 1;
                     count++;
+                    if(direct==2){
+                        valid=count-1;
+                    }
 
                 }
 
@@ -427,10 +438,13 @@ public class Board extends JPanel implements ActionListener {
 
                     }else{
                         if(i%2==0){
-
-
+                                if(valid!=-1){
+                                    ghost_dx[i]=dx[valid];
+                                    ghost_dy[i]=dy[valid];
+                                }
+                               else{
                                 ghost_dx[i]=dx[min];
-                                ghost_dy[i]=dy[min];
+                                ghost_dy[i]=dy[min];}
 
                         }else {
                             if(dmax<2*BLOCK_SIZE){

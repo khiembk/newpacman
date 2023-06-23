@@ -27,10 +27,10 @@ public class Algorithm {
          output = new int[size][size];
          for (int i=0;i<size*size;i++){
              int row= i/size;
-             int index= i-row*size;
+             int column= i%size;
              if((InputArray[i]& 16)!=0)
-             { output[row][index]=1;}
-             else output[row][index]=0;
+             { output[row][column]=1;}
+             else output[row][column]=0;
          }
 
       return output;
@@ -58,6 +58,14 @@ public class Algorithm {
                int x_test=head[0]+dx[i];
                int y_test= head[1]+dy[i];
                if (x_test>=0 && x_test<15 && y_test>=0 && y_test<15 && Inputdata[x_test][y_test]!=0 && visited[x_test][y_test]==false)
+               /*
+               010101010-16 bit
+               bit dau the hien co tuong ben trai
+               bit 2 the hien co tuong tren
+               bit 3 the hien co tuong ben trai
+               bit 4 the hien co tuong duoi
+               bit cuoi la co diem hoac khong
+               */
                {    int [] next={x_test,y_test};
                    queue.add(next);
                    visited[x_test][y_test]=true;
