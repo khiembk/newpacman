@@ -13,11 +13,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import com.zetcode.Algorithm;
 
+import static com.zetcode.Algorithm.CreateInput;
+import static com.zetcode.Algorithm.FindwaytoPacman;
 
 
 public class Board extends JPanel implements ActionListener {
@@ -37,13 +42,13 @@ public class Board extends JPanel implements ActionListener {
     private final int SCREEN_SIZE = N_BLOCKS * BLOCK_SIZE;
     private final int PAC_ANIM_DELAY = 2;
     private final int PACMAN_ANIM_COUNT = 4;
-    private final int MAX_GHOSTS = 12;
+    private final int MAX_GHOSTS = 6;
     private final int PACMAN_SPEED = 6;
     private boolean eattenpoint= false;
     private int pacAnimCount = PAC_ANIM_DELAY;
     private int pacAnimDir = 1;
     private int pacmanAnimPos = 0;
-    private int N_GHOSTS = 6;
+    private int N_GHOSTS = 4;
     private int pacsLeft, score;
     private int[] dx, dy;
     private boolean ghostdeath[];
@@ -63,6 +68,7 @@ public class Board extends JPanel implements ActionListener {
     private boolean mad= false;
     private boolean eatfood;
     private int highscore=100;
+
     private final Image ghostUpList[]= {
             new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostUp1.png").getImage(),
             new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostUp2.png").getImage(),
@@ -86,7 +92,7 @@ public class Board extends JPanel implements ActionListener {
             new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostLeft3.png").getImage(),
             new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostLeft4.png").getImage()
     };
-    private final short levelData[] = {
+    private static short levelData[] = {
             19, 26, 26, 26, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 22,
             21, 0, 0, 0, 17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
             21, 0, 0, 0, 17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
@@ -103,7 +109,7 @@ public class Board extends JPanel implements ActionListener {
             1, 25, 24, 24, 24, 24, 24, 24, 24, 24, 16, 16, 16, 18, 20,
             9, 8, 8, 8, 8, 8, 8, 8, 8, 8, 25, 24, 24, 24, 28
     };
-    private final short hustData[]={19, 18, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 18, 22,
+    private static short hustData[]={19, 18, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 18, 22,
             17, 20,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 17, 20,
             17, 16, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 16, 20,
             17, 16, 16, 16, 16, 16, 16, 16, 24, 24, 16, 24, 24, 16, 20,
@@ -119,7 +125,7 @@ public class Board extends JPanel implements ActionListener {
             17, 16, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 16, 20,
             25, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 28
     };
-    private final short matrixData[]={19, 26, 26, 26, 26, 26, 22, 19, 26, 26, 26, 22, 19, 26, 22,
+    private static short matrixData[]={19, 26, 26, 26, 26, 26, 22, 19, 26, 26, 26, 22, 19, 26, 22,
             21, 19, 18, 26, 26, 22, 21, 25, 30, 19, 26, 24, 28, 27, 28,
             21, 21, 25, 26, 22, 21, 25, 26, 22, 21, 19, 26, 26, 22, 23,
             21, 25, 22, 19, 28, 21, 19, 30, 25, 28, 21, 19, 22, 21, 21,
@@ -134,7 +140,7 @@ public class Board extends JPanel implements ActionListener {
             19, 26, 28, 25, 26, 22, 19, 20, 19, 28, 21, 25, 28, 21, 21,
             17, 26, 26, 26, 22, 25, 28, 21, 21, 23, 25, 26, 26, 28, 21,
             25, 26, 26, 30, 25, 26, 26, 28, 25, 24, 26, 26, 26, 26, 28};
-    private final short CrossWord[] = {
+    private static short CrossWord[] = {
             0, 19, 18, 22,  0,  0, 19, 18, 22,  0, 19, 18, 18, 22,  0,
             19, 16, 16, 20,  0, 19, 16, 16, 20,  0, 17, 16, 16, 16, 22,
             17, 16, 16, 24, 18, 16, 16, 16, 20,  0, 25, 24, 16, 16, 20,
@@ -157,7 +163,7 @@ public class Board extends JPanel implements ActionListener {
     private int currentSpeed = 4;
     private short[] screenData;
     private Timer timer;
-
+    private int[][] Input= new int[15][15];
     public Board() {
 
         loadImages();
@@ -191,6 +197,7 @@ public class Board extends JPanel implements ActionListener {
         for(int j=0;j<MAX_GHOSTS;j++){
             ghost_color[j]= j%4;
             ghostdeath[j]=false;
+
         }
         timer = new Timer(40, this);
         timer.start();
@@ -294,6 +301,8 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
+
+
     private void checkMaze() {
 
         short i = 0;
@@ -355,24 +364,28 @@ public class Board extends JPanel implements ActionListener {
                     dx[count] = -1;
                     dy[count] = 0;
                     count++;
+
                 }
 
                 if ((screenData[pos] & 2) == 0 && ghost_dy[i] != 1) {
                     dx[count] = 0;
                     dy[count] = -1;
                     count++;
+
                 }
 
                 if ((screenData[pos] & 4) == 0 && ghost_dx[i] != -1) {
                     dx[count] = 1;
                     dy[count] = 0;
                     count++;
+
                 }
 
                 if ((screenData[pos] & 8) == 0 && ghost_dy[i] != -1) {
                     dx[count] = 0;
                     dy[count] = 1;
                     count++;
+
                 }
 
                 if (count == 0) {
@@ -414,8 +427,11 @@ public class Board extends JPanel implements ActionListener {
 
                     }else{
                         if(i%2==0){
-                            ghost_dx[i] = dx[min];
-                            ghost_dy[i] = dy[min];
+
+
+                                ghost_dx[i]=dx[min];
+                                ghost_dy[i]=dy[min];
+
                         }else {
                             if(dmax<2*BLOCK_SIZE){
                                 ghost_dx[i]=dx[min];
@@ -682,7 +698,7 @@ public class Board extends JPanel implements ActionListener {
         pacsLeft = 3;
         score = 0;
         initLevel(level);
-        N_GHOSTS = 6;
+        N_GHOSTS = 4;
         currentSpeed = 3;
         for(int j=0;j<N_GHOSTS;j++){
             ghostdeath[j]=false;
@@ -754,6 +770,7 @@ public class Board extends JPanel implements ActionListener {
             ghostdeath[i]=false;
             ghost_y[i] = 4 * BLOCK_SIZE;
             ghost_x[i] = 4 * BLOCK_SIZE;
+
             ghost_dy[i] = 0;
             ghost_dx[i] = dx;
             dx = -dx;
