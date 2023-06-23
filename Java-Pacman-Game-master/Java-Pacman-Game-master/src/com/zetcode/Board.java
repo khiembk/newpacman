@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import com.zetcode.Algorithm;
 
-import static com.zetcode.Algorithm.CreateInput;
+
 import static com.zetcode.Algorithm.FindwaytoPacman;
 
 
@@ -36,19 +36,19 @@ public class Board extends JPanel implements ActionListener {
     private boolean pause = false;
     private boolean inGame = false;
     private boolean dying = false;
-
+    private short[] coppyofDatascreen;
     private final int BLOCK_SIZE = 24;
     private final int N_BLOCKS = 15;
     private final int SCREEN_SIZE = N_BLOCKS * BLOCK_SIZE;
     private final int PAC_ANIM_DELAY = 2;
     private final int PACMAN_ANIM_COUNT = 4;
-    private final int MAX_GHOSTS = 6;
-    private final int PACMAN_SPEED = 6;
+    private final int MAX_GHOSTS = 8;
+    private final int PACMAN_SPEED = 4;
     private boolean eattenpoint= false;
     private int pacAnimCount = PAC_ANIM_DELAY;
     private int pacAnimDir = 1;
     private int pacmanAnimPos = 0;
-    private int N_GHOSTS = 4;
+    private int N_GHOSTS = 6;
     private int pacsLeft, score;
     private int[] dx, dy;
     private boolean ghostdeath[];
@@ -58,7 +58,7 @@ public class Board extends JPanel implements ActionListener {
     private Image pacman1, pacman2up,pacman2left, pacman2right, pacman2down;
     private Image pacman3up, pacman3down, pacman3left, pacman3right;
     private Image pacman4up, pacman4down, pacman4left, pacman4right;
-    private Image cherry;
+    private Image cherry,blueApple;
     private int pacman_x, pacman_y, pacmand_x, pacmand_y;
     private int req_dx, req_dy, view_dx, view_dy;
     private int lukypoint_x;
@@ -183,6 +183,7 @@ public class Board extends JPanel implements ActionListener {
     private void initVariables() {
 
         screenData = new short[N_BLOCKS * N_BLOCKS];
+        coppyofDatascreen= new short[N_BLOCKS*N_BLOCKS];
         mazeColor = new Color(5, 100, 5);
         d = new Dimension(400, 400);
         ghost_x = new int[MAX_GHOSTS];
@@ -357,25 +358,20 @@ public class Board extends JPanel implements ActionListener {
                  continue;
             if (ghost_x[i] % BLOCK_SIZE == 0 && ghost_y[i] % BLOCK_SIZE == 0) {
                 pos = ghost_x[i] / BLOCK_SIZE + N_BLOCKS * (int) (ghost_y[i] / BLOCK_SIZE);
-                int direct = FindwaytoPacman(CreateInput(levelData,15),ghost_x[i]/BLOCK_SIZE,ghost_y[i]/BLOCK_SIZE,pacman_x/BLOCK_SIZE,pacman_y/BLOCK_SIZE);
+
                 count = 0;
-                int valid=-1;
+
                 if ((screenData[pos] & 1) == 0 && ghost_dx[i] != 1) {
                     dx[count] = -1;
                     dy[count] = 0;
                     count++;
-                   if(direct==1){
-                       valid=count-1;
-                   }
+
                 }
 
                 if ((screenData[pos] & 2) == 0 && ghost_dy[i] != 1) {
                     dx[count] = 0;
                     dy[count] = -1;
                     count++;
-                    if(direct==3){
-                        valid=count-1;
-                    }
 
                 }
 
@@ -383,9 +379,6 @@ public class Board extends JPanel implements ActionListener {
                     dx[count] = 1;
                     dy[count] = 0;
                     count++;
-                    if(direct==0){
-                        valid=count-1;
-                    }
 
                 }
 
@@ -393,9 +386,6 @@ public class Board extends JPanel implements ActionListener {
                     dx[count] = 0;
                     dy[count] = 1;
                     count++;
-                    if(direct==2){
-                        valid=count-1;
-                    }
 
                 }
 
@@ -438,16 +428,29 @@ public class Board extends JPanel implements ActionListener {
 
                     }else{
                         if(i%2==0){
-                                if(valid!=-1){
-                                    ghost_dx[i]=dx[valid];
-                                    ghost_dy[i]=dy[valid];
+                              int direct = FindwaytoPacman(coppyofDatascreen,ghost_x[i]/BLOCK_SIZE,ghost_y[i]/BLOCK_SIZE,pacman_x/BLOCK_SIZE,pacman_y/BLOCK_SIZE);
+                                if(direct==0){
+                                    ghost_dx[i]=1;
+                                    ghost_dy[i]=0;
                                 }
-                               else{
-                                ghost_dx[i]=dx[min];
-                                ghost_dy[i]=dy[min];}
+                            if(direct==1){
+                                ghost_dx[i]=-1;
+                                ghost_dy[i]=0;
+                            }
+                            if(direct==2){
+                                ghost_dx[i]=0;
+                                ghost_dy[i]=1;
+                            }
+                            if(direct==3){
+                                ghost_dx[i]=0;
+                                ghost_dy[i]=-1;
+                            }
 
-                        }else {
-                            if(dmax<2*BLOCK_SIZE){
+                                }
+
+
+                        else {
+                            if(dmax<3*BLOCK_SIZE){
                                 ghost_dx[i]=dx[min];
                                 ghost_dy[i]=dy[min];
                             }else{
@@ -681,8 +684,9 @@ public class Board extends JPanel implements ActionListener {
                 if ((screenData[i] & 16) != 0) {
                     g2d.setColor(dotColor);
                     if(x==lukypoint_x && y==lukypoint_y && eattenpoint==false)
-                    {    g2d.setColor(Color.blue);
-                        g2d.fillOval(x+9,y+9,8,8);}
+                    {
+                       g2d.drawImage(blueApple,x,y,this);
+                    }
                     if(x==magicfood_x && y==magicfood_y && eatfood ==false)
                     {
                         g2d.drawImage(cherry,x,y,this);
@@ -702,7 +706,7 @@ public class Board extends JPanel implements ActionListener {
         pacsLeft = 3;
         score = 0;
         initLevel();
-        N_GHOSTS = 4;
+        N_GHOSTS = 6;
         currentSpeed = 3;
         for(int j=0;j<N_GHOSTS;j++){
             ghostdeath[j]=false;
@@ -742,6 +746,7 @@ public class Board extends JPanel implements ActionListener {
         int i;
         for (i = 0; i < N_BLOCKS * N_BLOCKS; i++) {
             screenData[i] = hustData[i];
+            coppyofDatascreen[i]=hustData[i];
         }
         continueLevel();
     }
@@ -749,21 +754,25 @@ public class Board extends JPanel implements ActionListener {
         if(level==1){
             for (int i=0;i<N_BLOCKS*N_BLOCKS;i++){
                 screenData[i]= levelData[i];
+                coppyofDatascreen[i]=levelData[i];
             }
         }
         if(level==2){
             for (int i=0;i<N_BLOCKS*N_BLOCKS;i++){
                 screenData[i]= hustData[i];
+                coppyofDatascreen[i]=hustData[i];
             }
         }
         if(level==3){
             for (int i=0;i<N_BLOCKS*N_BLOCKS;i++){
                 screenData[i]= matrixData[i];
+                coppyofDatascreen[i]=matrixData[i];
             }
         }
         if(level==4){
             for (int i=0;i<N_BLOCKS*N_BLOCKS;i++){
                 screenData[i]= CrossWord[i];
+                coppyofDatascreen[i]=CrossWord[i];
             }
         }
         continueLevel();
@@ -814,6 +823,7 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void loadImages() {
+        blueApple= new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/blueApple.png").getImage();
         cherry= new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/cherry.png").getImage();
         ghostUp= new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostUp.png").getImage();
         ghostDown= new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostDown.png").getImage();
