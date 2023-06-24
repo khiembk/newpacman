@@ -68,7 +68,6 @@ public class Board extends JPanel implements ActionListener {
     private boolean mad= false;
     private boolean eatfood;
     private int highscore=100;
-
     private final Image ghostUpList[]= {
             new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostUp1.png").getImage(),
             new ImageIcon("C:/Users/khiem/Desktop/Java-Pacman-Game-master/Java-Pacman-Game-master/src/resources/images/ghostUp2.png").getImage(),
@@ -158,7 +157,7 @@ public class Board extends JPanel implements ActionListener {
             0, 25, 24, 24, 28,  0, 25, 24, 28,  0,  0, 25, 24, 28,  0
     };
     private final int validSpeeds[] = {1, 2, 3, 4, 6, 8};
-    private final int maxSpeed = 6;
+    private final int maxSpeed = 8;
 
     private int currentSpeed = 4;
     private short[] screenData;
@@ -422,7 +421,7 @@ public class Board extends JPanel implements ActionListener {
                     }
 
 
-                    if(mad==true && dmax <3*BLOCK_SIZE ){
+                    if(mad==true && dmax <4*BLOCK_SIZE ){
                         ghost_dx[i]=dx[max];
                         ghost_dy[i]=dy[max];
 
@@ -706,7 +705,7 @@ public class Board extends JPanel implements ActionListener {
         pacsLeft = 3;
         score = 0;
         initLevel();
-        N_GHOSTS = 6;
+        N_GHOSTS = 4;
         currentSpeed = 3;
         for(int j=0;j<N_GHOSTS;j++){
             ghostdeath[j]=false;
@@ -805,7 +804,7 @@ public class Board extends JPanel implements ActionListener {
             if(i%2==1)
             {ghostSpeed[i] = validSpeeds[random];}
             else {
-                random=currentSpeed+ (int)(Math.random()*(maxSpeed-currentSpeed)/3);
+                random=currentSpeed;
                 ghostSpeed[i]= validSpeeds[random];
 
             }

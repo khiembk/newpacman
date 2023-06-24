@@ -63,6 +63,7 @@ public class Algorithm {
                if((Inputdata[pos] & 2)!=0){
                    if(dy[i]==-1){
                        dy[i]=0;
+
                    }
                }
            }
