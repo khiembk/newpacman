@@ -13,15 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import com.zetcode.Algorithm;
-
-
 import static com.zetcode.Algorithm.FindwaytoPacman;
 
 
@@ -362,7 +356,7 @@ public class Board extends JPanel implements ActionListener {
                         ghost_dy[i]=dy[max];
 
                     }else{
-                        if(i%2==0){
+                        if(i==2|| i==0){
                               int direct = FindwaytoPacman(coppyofDatascreen,ghost_x[i]/BLOCK_SIZE,ghost_y[i]/BLOCK_SIZE,pacman_x/BLOCK_SIZE,pacman_y/BLOCK_SIZE);
                                 if(direct==0){
                                     ghost_dx[i]=1;
@@ -677,6 +671,7 @@ public class Board extends JPanel implements ActionListener {
 
     }
     private void initLevel() {
+
          screenData=Map.getHustData();
 
         continueLevel();
@@ -716,7 +711,10 @@ public class Board extends JPanel implements ActionListener {
             ghostdeath[i]=false;
             ghost_y[i] = 4 * BLOCK_SIZE;
             ghost_x[i] = 4 * BLOCK_SIZE;
-
+            if (i==0){
+              ghost_x[0]= 0;
+              ghost_y[0]= BLOCK_SIZE;
+            }
             ghost_dy[i] = 0;
             ghost_dx[i] = dx;
             dx = -dx;

@@ -3,9 +3,9 @@ package com.zetcode;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 
-public class Pacman extends JFrame {
+public class Game extends JFrame {
 
-    public Pacman() {
+    public Game() {
 
         initUI();
     }
@@ -24,7 +24,7 @@ public class Pacman extends JFrame {
 
         EventQueue.invokeLater(() -> {
 
-            var ex = new Pacman();
+            var ex = new Game();
             ex.setVisible(true);
         });
     }
