@@ -78,6 +78,9 @@ public class Map {
     public static  short[] getCrossWord(){
         return CrossWord;
     }
-
+    public static void main(String args[]){
+        String dir = System.getProperty("user.dir");
+        System.out.println(dir);
+    }
 
 }
