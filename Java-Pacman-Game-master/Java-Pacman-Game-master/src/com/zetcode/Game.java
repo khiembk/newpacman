@@ -2,6 +2,8 @@ package com.zetcode;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
+import java.util.logging.Logger;
+
 
 public class Game extends JFrame {
 
@@ -27,5 +29,7 @@ public class Game extends JFrame {
             var ex = new Game();
             ex.setVisible(true);
         });
+
+
     }
 }

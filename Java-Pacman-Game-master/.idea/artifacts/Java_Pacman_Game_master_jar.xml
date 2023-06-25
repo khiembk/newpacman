@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Java-Pacman-Game-master:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Java_Pacman_Game_master_jar</output-path>
+    <root id="archive" name="Java-Pacman-Game-master.jar">
+      <element id="module-output" name="Java-Pacman-Game-master" />
+    </root>
+  </artifact>
+</component>
