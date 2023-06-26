@@ -2,7 +2,7 @@ package com.zetcode;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
-import java.util.logging.Logger;
+
 
 
 public class Game extends JFrame {
