@@ -63,6 +63,11 @@ public class Board extends JPanel implements ActionListener {
     private boolean eatfood;
     private int highscore=100;
     private final String dir= System.getProperty("user.dir");
+    private final short[] map1= Map.getLevelData();
+    private final short[] map2= Map.getHustData();
+    private final short[] map3= Map.getMatrixData();
+    private final short[] map4= Map.getCrossWord();
+
     private final Image ghostUpList[]= {
             new ImageIcon(dir+"/Java-Pacman-Game-master/src/resources/images/ghostUp1.png").getImage(),
             new ImageIcon(dir+"/Java-Pacman-Game-master/src/resources/images/ghostUp2.png").getImage(),
@@ -672,27 +677,38 @@ public class Board extends JPanel implements ActionListener {
 
     }
     private void initLevel() {
+          for(int i=0;i<N_BLOCKS*N_BLOCKS;i++){
+              screenData[i]= map2[i];
+              coppyofDatascreen[i]=map2[i];
+          }
 
-         screenData=Map.getHustData();
 
         continueLevel();
     }
     private void initLevel(int level){
         if(level==1){
-          screenData=Map.getLevelData();
-          coppyofDatascreen=Map.getLevelData();
+            for(int i=0;i<N_BLOCKS*N_BLOCKS;i++){
+                screenData[i]= map1[i];
+                coppyofDatascreen[i]=map1[i];
+            }
         }
         if(level==2){
-           screenData=Map.getHustData();
-           coppyofDatascreen=Map.getHustData();
+            for(int i=0;i<N_BLOCKS*N_BLOCKS;i++){
+                screenData[i]= map2[i];
+                coppyofDatascreen[i]=map2[i];
+            }
         }
         if(level==3){
-          screenData=Map.getMatrixData();
-          coppyofDatascreen=Map.getMatrixData();
+            for(int i=0;i<N_BLOCKS*N_BLOCKS;i++){
+                screenData[i]= map3[i];
+                coppyofDatascreen[i]=map3[i];
+            }
         }
         if(level==4){
-           screenData=Map.getCrossWord();
-           coppyofDatascreen=Map.getCrossWord();
+            for(int i=0;i<N_BLOCKS*N_BLOCKS;i++){
+                screenData[i]= map4[i];
+                coppyofDatascreen[i]=map4[i];
+            }
         }
         continueLevel();
     }
